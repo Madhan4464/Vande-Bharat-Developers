@@ -1,7 +1,18 @@
+# Environment and secrets
 .env
 .venv/
-__pycache__/
+venv/
+
+# Python
+_pycache_/
 *.py[cod]
+
+# Database
 db.sqlite3
+
+# Media and static files
 media/
 staticfiles/
+
+# System files
+.DS_Store
