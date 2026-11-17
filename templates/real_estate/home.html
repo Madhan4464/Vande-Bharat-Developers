@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Vande Bharat Developers | Building your future{% endblock %}
+{% block meta_description %}Discover thoughtfully planned land and real estate from Vande Bharat Developers. Find a place for your next chapter.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="container hero-content">
+    <div class="eyebrow eyebrow-light"><span></span> A foundation for what’s next</div>
+    <h1>Building Your Dreams,<br>Creating Your <em>Future.</em></h1>
+    <p>At Vande Bharat Developers, we believe the right place is more than land. It’s where your next chapter begins.</p>
+    <div class="d-flex flex-wrap gap-3">
+      <a class="btn btn-gold btn-lg" href="{% url 'projects' %}">Explore projects <i class="fa-solid fa-arrow-right ms-2"></i></a>
+      <a class="btn btn-outline-light btn-lg" href="{% url 'contact' %}">Let’s talk</a>
+    </div>
+    <div class="hero-caption"><span></span> A quieter kind of confidence.</div>
+  </div>
+  <div class="hero-index">01 <span></span> 03</div>
+</section>
+
+<section class="trust-strip">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-6 col-lg-3"><div class="trust-item"><i class="fa-regular fa-compass"></i><span>Locations<br><strong>chosen with care</strong></span></div></div>
+      <div class="col-6 col-lg-3"><div class="trust-item"><i class="fa-regular fa-map"></i><span>Plans<br><strong>made for tomorrow</strong></span></div></div>
+      <div class="col-6 col-lg-3"><div class="trust-item"><i class="fa-regular fa-handshake"></i><span>Guidance<br><strong>without the guesswork</strong></span></div></div>
+      <div class="col-6 col-lg-3"><div class="trust-item"><i class="fa-solid fa-seedling"></i><span>A future<br><strong>worth growing into</strong></span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="section-heading d-flex flex-wrap justify-content-between align-items-end gap-3">
+      <div><div class="eyebrow"><span></span> Places with possibility</div><h2>Find the right place<br>for <em>your next chapter.</em></h2></div>
+      <a class="text-link" href="{% url 'projects' %}">View all projects <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="row g-4 mt-2">
+      {% for project in featured_projects %}
+      <div class="col-md-6 col-lg-4">
+        <article class="property-card">
+          <a class="property-photo" href="{{ project.get_absolute_url }}" aria-label="View {{ project.name }}">
+            {% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.name }} in {{ project.location }}" loading="lazy">{% else %}<img src="{% static 'images/project-placeholder.svg' %}" alt="Architectural placeholder for {{ project.name }}" loading="lazy">{% endif %}
+            <span class="status-pill">{{ project.get_status_display }}</span>
+          </a>
+          <div class="property-body">
+            {% if project.location %}<div class="property-location"><i class="fa-solid fa-location-dot"></i> {{ project.location }}</div>{% endif %}
+            <h3><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></h3>
+            <div class="property-meta"><span><i class="fa-regular fa-square"></i> {{ project.plot_sizes|default:project.get_property_type_display }}</span><span>{{ project.get_property_type_display }}</span></div>
+            <div class="property-bottom"><span class="price-label">{% if project.price_from %}Starting from <strong>₹{{ project.price_from|floatformat:0 }}</strong>{% else %}Price on enquiry{% endif %}</span><a class="round-arrow" href="{{ project.get_absolute_url }}" aria-label="Explore {{ project.name }}"><i class="fa-solid fa-arrow-right"></i></a></div>
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <div class="col-12"><div class="empty-state"><i class="fa-regular fa-compass"></i><h3>Good things are taking shape.</h3><p>Our first project is on its way. Get in touch to be the first to know.</p><a class="btn btn-dark-blue" href="{% url 'contact' %}">Talk to our team</a></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="services-section section-pad">
+  <div class="container">
+    <div class="section-heading text-center mx-auto"><div class="eyebrow justify-content-center"><span></span> Thoughtful guidance, your way</div><h2>Here for more than<br><em>the first decision.</em></h2><p class="body-muted">Explore the ways we can help you take a confident next step.</p></div>
+    <div class="row g-3 mt-4">
+      <div class="col-md-6 col-lg"><article class="service-card"><i class="fa-solid fa-house-chimney"></i><h3>Residential plots</h3><p>Find a considered foundation for the home you have in mind.</p><a href="{% url 'projects' %}">Explore projects <i class="fa-solid fa-arrow-right"></i></a></article></div>
+      <div class="col-md-6 col-lg"><article class="service-card"><i class="fa-solid fa-border-all"></i><h3>Open plots</h3><p>Discover open-land opportunities and ask us about the details.</p><a href="{% url 'projects' %}">View properties <i class="fa-solid fa-arrow-right"></i></a></article></div>
+      <div class="col-md-6 col-lg"><article class="service-card"><i class="fa-solid fa-chart-line"></i><h3>Real estate investment</h3><p>Talk through your goals, time horizon, and questions with our team.</p><a href="{% url 'contact' %}">Discuss your plans <i class="fa-solid fa-arrow-right"></i></a></article></div>
+      <div class="col-md-6 col-lg"><article class="service-card"><i class="fa-regular fa-comments"></i><h3>Property consultation</h3><p>Get a clear, personal conversation about your next move.</p><a href="{% url 'contact' %}">Start a conversation <i class="fa-solid fa-arrow-right"></i></a></article></div>
+      <div class="col-md-6 col-lg"><article class="service-card"><i class="fa-solid fa-key"></i><h3>Property management</h3><p>Ask us about support tailored to the property you own.</p><a href="{% url 'contact' %}">Talk to our team <i class="fa-solid fa-arrow-right"></i></a></article></div>
+    </div>
+  </div>
+</section>
+
+<section class="story-section section-pad">
+  <div class="container"><div class="row gy-5 align-items-center">
+    <div class="col-lg-6"><div class="story-image-wrap"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=85" alt="Warm, thoughtfully designed modern home interior" loading="lazy"><div class="image-note"><i class="fa-solid fa-sparkles"></i><span>Considered in every detail</span></div></div></div>
+    <div class="col-lg-6 ps-lg-5"><div class="eyebrow"><span></span> A little about us</div><h2>We believe a place<br>should <em>feel like possibility.</em></h2><p class="body-lead">A good decision starts with good people, honest conversations, and a plan you can believe in. That’s the experience we want to bring to every property journey.</p><p class="body-muted">From a first investment to the foundation of a forever home, our focus is on helping you move forward with clarity. The details matter. So does the trust behind them.</p><a class="text-link mt-3 d-inline-flex" href="{% url 'about' %}">Get to know us <i class="fa-solid fa-arrow-right"></i></a></div>
+  </div></div>
+</section>
+
+<section class="section-pad why-section">
+  <div class="container"><div class="section-heading text-center mx-auto"><div class="eyebrow justify-content-center"><span></span> The Vande Bharat difference</div><h2>A better feeling from<br><em>the very first conversation.</em></h2><p class="body-muted">Real estate is a big decision. A little more care can make all the difference.</p></div>
+    <div class="row g-4 mt-4">
+      <div class="col-md-6 col-lg-3"><div class="value-card"><span class="value-icon"><i class="fa-solid fa-route"></i></span><h3>Clear from day one</h3><p>Straightforward conversations and practical guidance, without the unnecessary complexity.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="value-card"><span class="value-icon"><i class="fa-regular fa-gem"></i></span><h3>Chosen with intention</h3><p>We look for the things that matter: thoughtful planning, useful locations, and lasting potential.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="value-card"><span class="value-icon"><i class="fa-solid fa-people-group"></i></span><h3>People, always</h3><p>Your goals deserve a real conversation. Our team is here to listen, not just to sell.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="value-card"><span class="value-icon"><i class="fa-regular fa-clock"></i></span><h3>Here for the journey</h3><p>Considered support, from your first questions through your next steps.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-section">
+  <div class="container"><div class="quote-mark">“</div><blockquote>“The most meaningful places aren’t just built. They’re built on trust.”</blockquote><div class="quote-byline"><span></span> THE WAY WE SEE IT</div></div>
+</section>
+<section class="section-pad testimonials-section">
+  <div class="container">
+    <div class="section-heading text-center mx-auto"><div class="eyebrow justify-content-center"><span></span> People, not promises</div><h2>Good things are built<br><em>together.</em></h2></div>
+    <div class="row g-4 justify-content-center">
+      {% for testimonial in testimonials %}
+      <div class="col-md-6 col-lg-4"><figure class="testimonial-card"><div class="testimonial-stars" aria-label="Customer testimonial"><i class="fa-solid fa-quote-left"></i></div><blockquote>{{ testimonial.quote }}</blockquote><figcaption><strong>{{ testimonial.customer_name }}</strong>{% if testimonial.context %}<span>{{ testimonial.context }}</span>{% endif %}</figcaption></figure></div>
+      {% empty %}
+      <div class="col-lg-7"><div class="testimonial-empty"><i class="fa-regular fa-heart"></i><p>We believe the people we serve should speak for themselves. As our first customers share their stories, you’ll find their words here.</p><a class="text-link" href="{% url 'contact' %}">Start your conversation <i class="fa-solid fa-arrow-right"></i></a></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

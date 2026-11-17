@@ -1,0 +1,5 @@
+{{ form.website }}
+{% if form.non_field_errors %}<div class="form-error-summary" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+<div class="form-field"><label for="{{ form.name.id_for_label }}">Your name</label>{{ form.name }}{% if form.name.errors %}<div class="field-error">{{ form.name.errors|join:", " }}</div>{% endif %}</div>
+<div class="row"><div class="col-md-6"><div class="form-field"><label for="{{ form.phone.id_for_label }}">Phone number</label>{{ form.phone }}{% if form.phone.errors %}<div class="field-error">{{ form.phone.errors|join:", " }}</div>{% endif %}</div></div><div class="col-md-6"><div class="form-field"><label for="{{ form.email.id_for_label }}">Email address</label>{{ form.email }}{% if form.email.errors %}<div class="field-error">{{ form.email.errors|join:", " }}</div>{% endif %}</div></div></div>
+<div class="form-field"><label for="{{ form.message.id_for_label }}">How can we help?</label>{{ form.message }}{% if form.message.errors %}<div class="field-error">{{ form.message.errors|join:", " }}</div>{% endif %}</div>

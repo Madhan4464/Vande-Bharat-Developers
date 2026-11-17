@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Contact us | Vande Bharat Developers{% endblock %}
+{% block meta_description %}Start a conversation with Vande Bharat Developers about our projects and property opportunities.{% endblock %}
+{% block content %}
+<section class="page-hero contact-hero"><div class="container"><div class="eyebrow eyebrow-light"><span></span> We’re here to listen</div><h1>Let’s talk about<br><em>what comes next.</em></h1><p>Whether you have a plan or just a question, there’s a person here ready to listen.</p></div></section>
+<section class="section-pad"><div class="container"><div class="row gy-5">
+  <div class="col-lg-7"><div class="contact-form-card"><div class="eyebrow"><span></span> Get in touch</div><h2>Tell us what’s <em>on your mind.</em></h2><p class="body-muted mb-4">Share a few details and our team will be in touch.</p><form method="post" novalidate>{% csrf_token %}{% include "real_estate/includes/enquiry_fields.html" with form=form %}<button class="btn btn-gold btn-lg mt-2" type="submit">Send your message <i class="fa-solid fa-arrow-right ms-2"></i></button></form></div></div>
+  <div class="col-lg-5 ps-lg-5"><div class="eyebrow"><span></span> The human side</div><h2>Good things start<br>with <em>a hello.</em></h2><p class="body-muted">No pitch, no pressure. Tell us where you are in your property journey and we’ll help you figure out a useful next step.</p>
+    <div class="contact-detail-list">
+      {% if company_phone %}<a class="contact-detail" href="tel:{{ company_phone }}"><span class="contact-detail-icon"><i class="fa-solid fa-phone"></i></span><span><small>Call our team</small><strong>{{ company_phone }}</strong></span></a>{% endif %}
+      {% if company_email %}<a class="contact-detail" href="mailto:{{ company_email }}"><span class="contact-detail-icon"><i class="fa-regular fa-envelope"></i></span><span><small>Write to us</small><strong>{{ company_email }}</strong></span></a>{% endif %}
+      {% if company_address %}<div class="contact-detail"><span class="contact-detail-icon"><i class="fa-solid fa-location-dot"></i></span><span><small>Find us</small><strong>{{ company_address }}</strong></span></div>{% endif %}
+      {% if company_whatsapp_number %}<a class="contact-detail" href="https://wa.me/{{ company_whatsapp_number }}" target="_blank" rel="noopener noreferrer"><span class="contact-detail-icon"><i class="fa-brands fa-whatsapp"></i></span><span><small>A quick hello</small><strong>Message us on WhatsApp</strong></span></a>{% endif %}
+    </div>
+    {% if company_map_query %}<div class="map-frame contact-map"><iframe title="Map for Vande Bharat Developers" src="https://maps.google.com/maps?q={{ company_map_query|urlencode }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>{% else %}<div class="map-placeholder contact-map"><i class="fa-regular fa-map"></i><strong>Our location map is on its way</strong><span>Send us a message and we’ll be happy to help.</span></div>{% endif %}
+  </div>
+</div></div></section>
+{% endblock %}

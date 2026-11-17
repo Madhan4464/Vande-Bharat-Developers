@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Our projects | Vande Bharat Developers{% endblock %}
+{% block meta_description %}Explore current residential and open plot projects from Vande Bharat Developers.{% endblock %}
+{% block content %}
+<section class="page-hero projects-hero"><div class="container"><div class="eyebrow eyebrow-light"><span></span> Your next chapter starts here</div><h1>Spaces to dream.<br><em>Places to belong.</em></h1><p>Thoughtful projects, considered locations, and the space to make them your own.</p></div></section>
+<section class="section-pad projects-listing"><div class="container">
+  <form class="filter-panel" method="get" action="{% url 'projects' %}">
+    <label class="filter-search"><span>Find a property</span><div class="input-with-icon"><i class="fa-solid fa-magnifying-glass"></i><input name="q" value="{{ request.GET.q }}" type="search" placeholder="Search projects or locations" aria-label="Search projects or locations"></div></label>
+    <label><span>Location</span><select name="location" class="form-select"><option value="">All locations</option>{% for location in locations %}<option value="{{ location }}" {% if request.GET.location == location %}selected{% endif %}>{{ location }}</option>{% endfor %}</select></label>
+    <label><span>Property type</span><select name="type" class="form-select"><option value="">All types</option>{% for value,label in property_types %}<option value="{{ value }}" {% if request.GET.type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span>Budget</span><select name="budget" class="form-select"><option value="">Any budget</option><option value="under-50" {% if request.GET.budget == 'under-50' %}selected{% endif %}>Under ₹50 lakh</option><option value="50-100" {% if request.GET.budget == '50-100' %}selected{% endif %}>₹50 lakh–₹1 crore</option><option value="over-100" {% if request.GET.budget == 'over-100' %}selected{% endif %}>Over ₹1 crore</option></select></label>
+    <button class="btn btn-dark-blue filter-button" type="submit">Find a place <i class="fa-solid fa-arrow-right ms-2"></i></button>
+  </form>
+  <div class="d-flex align-items-center justify-content-between mt-5 mb-2"><p class="results-count mb-0"><strong>{{ projects|length }}</strong> place{{ projects|length|pluralize }} to explore</p>{% if request.GET.q or request.GET.location or request.GET.type or request.GET.budget %}<a class="clear-filters" href="{% url 'projects' %}">Clear filters <i class="fa-solid fa-xmark ms-1"></i></a>{% endif %}</div>
+  <div class="row g-4 mt-1">
+    {% for project in projects %}
+    <div class="col-md-6 col-lg-4"><article class="property-card">
+      <a class="property-photo" href="{{ project.get_absolute_url }}" aria-label="View {{ project.name }}">{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.name }} in {{ project.location }}" loading="lazy">{% else %}<img src="{% static 'images/project-placeholder.svg' %}" alt="Architectural illustration for {{ project.name }}" loading="lazy">{% endif %}<span class="status-pill">{{ project.get_status_display }}</span></a>
+      <div class="property-body">{% if project.location %}<div class="property-location"><i class="fa-solid fa-location-dot"></i> {{ project.location }}</div>{% endif %}<h3><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></h3><p class="card-summary">{{ project.overview|truncatewords:18 }}</p><div class="property-meta"><span><i class="fa-regular fa-square"></i> {{ project.plot_sizes|default:project.get_property_type_display }}</span><span>{{ project.get_property_type_display }}</span></div><div class="property-bottom"><span class="price-label">{% if project.price_from %}Starting from <strong>₹{{ project.price_from|floatformat:0 }}</strong>{% else %}Price on enquiry{% endif %}</span><a class="round-arrow" href="{{ project.get_absolute_url }}" aria-label="Explore {{ project.name }}"><i class="fa-solid fa-arrow-right"></i></a></div></div>
+    </article></div>
+    {% empty %}
+    <div class="col-12"><div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><h3>No places found just yet.</h3><p>Try adjusting your filters, or send us a note and we’ll help you find the right fit.</p><a class="btn btn-dark-blue" href="{% url 'contact' %}">Talk to our team</a></div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

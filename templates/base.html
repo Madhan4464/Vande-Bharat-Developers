@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101f33">
+  <meta name="description" content="{% block meta_description %}Vande Bharat Developers — thoughtfully planned plots and properties for a more confident tomorrow.{% endblock %}">
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+  <title>{% block title %}Vande Bharat Developers | Spaces for a better tomorrow{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link href="{% static 'css/site.css' %}" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="top-strip d-none d-lg-block">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span>Thoughtfully planned. Built for your future.</span>
+      <div class="d-flex gap-4">
+        {% if company_phone %}<a href="tel:{{ company_phone }}"><i class="fa-solid fa-phone me-2"></i>{{ company_phone }}</a>{% endif %}
+        {% if company_email %}<a href="mailto:{{ company_email }}"><i class="fa-regular fa-envelope me-2"></i>{{ company_email }}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+  <nav class="navbar navbar-expand-lg site-nav">
+    <div class="container">
+      <a class="brand d-flex align-items-center gap-2" href="{% url 'home' %}" aria-label="Vande Bharat Developers home">
+        <span class="brand-mark"><i class="fa-solid fa-building-columns"></i></span>
+        <span class="brand-copy"><strong>VANDE BHARAT</strong><small>DEVELOPERS</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavigation">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About us</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'projects' %}">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+          <li class="nav-item"><a class="btn btn-gold nav-cta" href="{% url 'projects' %}">Explore properties <i class="fa-solid fa-arrow-right ms-2"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    {% if messages %}
+      <div class="container message-stack">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="status">
+            {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Dismiss"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row gy-5 pb-5">
+        <div class="col-lg-5">
+          <a class="brand brand-light d-inline-flex align-items-center gap-2 mb-4" href="{% url 'home' %}">
+            <span class="brand-mark"><i class="fa-solid fa-building-columns"></i></span>
+            <span class="brand-copy"><strong>VANDE BHARAT</strong><small>DEVELOPERS</small></span>
+          </a>
+          <p class="footer-copy">Thoughtfully planned places, honest guidance, and a foundation for the life you imagine.</p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h3 class="footer-title">Explore</h3>
+          <a class="footer-link" href="{% url 'about' %}">Our story</a>
+          <a class="footer-link" href="{% url 'projects' %}">Our projects</a>
+          <a class="footer-link" href="{% url 'contact' %}">Get in touch</a>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h3 class="footer-title">Our promise</h3>
+          <span class="footer-link">Clear conversations</span>
+          <span class="footer-link">Thoughtful planning</span>
+          <span class="footer-link">Here for the journey</span>
+        </div>
+        <div class="col-lg-3">
+          <h3 class="footer-title">Say hello</h3>
+          {% if company_phone %}<a class="footer-link" href="tel:{{ company_phone }}">{{ company_phone }}</a>{% endif %}
+          {% if company_email %}<a class="footer-link" href="mailto:{{ company_email }}">{{ company_email }}</a>{% endif %}
+          {% if company_address %}<span class="footer-link">{{ company_address }}</span>{% endif %}
+          <a class="footer-link" href="{% url 'contact' %}">Send our team a message <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between gap-2">
+        <span>© {% now "Y" %} Vande Bharat Developers. All rights reserved.</span>
+        <span>Made for the place you’ll call yours.</span>
+      </div>
+    </div>
+  </footer>
+  <a class="floating-contact" href="{% if company_whatsapp_number %}https://wa.me/{{ company_whatsapp_number }}?text=Hello%2C%20I%27d%20like%20to%20know%20about%20your%20properties.{% else %}{% url 'contact' %}{% endif %}" {% if company_whatsapp_number %}target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp"{% else %}aria-label="Send us an enquiry"{% endif %}>
+    <i class="fa-brands {% if company_whatsapp_number %}fa-whatsapp{% else %}fa-comment-dots{% endif %}"></i>
+  </a>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

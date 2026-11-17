@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ project.name }} | Vande Bharat Developers{% endblock %}
+{% block meta_description %}Explore {{ project.name }} in {{ project.location }}. View project details and enquire with Vande Bharat Developers.{% endblock %}
+{% block content %}
+<section class="project-detail-hero">
+  {% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.name }} project in {{ project.location }}">{% else %}<img src="{% static 'images/project-placeholder.svg' %}" alt="Architectural illustration for {{ project.name }}">{% endif %}
+  <div class="project-detail-overlay"><div class="container"><a href="{% url 'projects' %}" class="back-link"><i class="fa-solid fa-arrow-left me-2"></i> All projects</a><div class="eyebrow eyebrow-light mt-4"><span></span> {{ project.get_status_display }}</div><h1>{{ project.name }}</h1>{% if project.location %}<p><i class="fa-solid fa-location-dot me-2"></i>{{ project.location }}</p>{% endif %}</div></div>
+</section>
+<section class="section-pad"><div class="container"><div class="row gy-5">
+  <div class="col-lg-8">
+    <div class="eyebrow"><span></span> The project</div><h2>Rooted here.<br><em>Ready for what’s next.</em></h2><p class="body-lead">{{ project.overview|linebreaksbr }}</p>
+    <div class="project-facts">
+      <div><span>Property type</span><strong>{{ project.get_property_type_display }}</strong></div>
+      <div><span>Plot sizes</span><strong>{{ project.plot_sizes|default:"Enquire for availability" }}</strong></div>
+      <div><span>Availability</span><strong>{{ project.get_status_display }}</strong></div>
+      <div><span>Investment</span><strong>{% if project.price_from %}₹{{ project.price_from|floatformat:0 }}{% if project.price_to %} – ₹{{ project.price_to|floatformat:0 }}{% endif %}{% else %}On enquiry{% endif %}</strong></div>
+    </div>
+    <div class="available-plots-panel"><div><div class="eyebrow"><span></span> Plot availability</div><h3>{% if project.status == "sold_out" %}This project is sold out.{% elif project.status == "coming_soon" %}Availability details are coming soon.{% else %}Let’s find your right fit.{% endif %}</h3>{% if project.plot_sizes and project.status != "sold_out" %}<p>Listed plot sizes: <strong>{{ project.plot_sizes }}</strong></p>{% else %}<p>Contact our team for current plot sizes and availability.</p>{% endif %}</div><a class="btn btn-dark-blue" href="#enquiry">Ask about availability <i class="fa-solid fa-arrow-right ms-2"></i></a></div>
+    {% if project.gallery.exists %}
+    <div class="eyebrow mt-5"><span></span> A closer look</div><h2>See it <em>for yourself.</em></h2>
+    <div class="row g-3 mt-1">{% for photo in project.gallery.all %}<div class="col-md-6"><figure class="gallery-image"><img src="{{ photo.image.url }}" alt="{{ photo.caption|default:project.name }}" loading="lazy">{% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}</figure></div>{% endfor %}</div>
+    {% endif %}
+    {% if project.highlights %}
+    <div class="eyebrow mt-5"><span></span> The details</div><h2>What makes it <em>stand apart.</em></h2><ul class="feature-list">{% for item in project.highlights.splitlines %}<li><i class="fa-solid fa-check"></i>{{ item }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if project.amenities %}
+    <div class="eyebrow mt-5"><span></span> Thoughtful touches</div><h2>Made for <em>everyday living.</em></h2><div class="amenity-grid">{% for item in project.amenities.splitlines %}<span><i class="fa-solid fa-check"></i>{{ item }}</span>{% endfor %}</div>
+    {% endif %}
+    {% if project.nearby_landmarks %}
+    <div class="eyebrow mt-5"><span></span> Around the neighbourhood</div><h2>Close to <em>what matters.</em></h2><ul class="feature-list">{% for item in project.nearby_landmarks.splitlines %}<li><i class="fa-solid fa-location-dot"></i>{{ item }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if project.location %}<div class="eyebrow mt-5"><span></span> Find your way</div><h2>A place in <em>{{ project.location }}.</em></h2>
+    <div class="map-frame"><iframe title="Map showing {{ project.location }}" src="https://maps.google.com/maps?q={{ project.location|urlencode }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    {% else %}<div class="map-placeholder mt-5"><i class="fa-regular fa-map"></i><strong>Project location details coming soon</strong><span>Contact our team for an update.</span></div>{% endif %}
+  </div>
+  <div class="col-lg-4"><aside class="enquiry-card" id="enquiry"><div class="eyebrow"><span></span> Take the next step</div><h2>Make it a <em>conversation.</em></h2><p>Ask us a question or find out what’s available. Our team is happy to help.</p>
+    <form method="post" novalidate>{% csrf_token %}{% include "real_estate/includes/enquiry_fields.html" with form=form %}<button class="btn btn-gold w-100 mt-2" type="submit">Send project enquiry <i class="fa-solid fa-arrow-right ms-2"></i></button></form>
+    {% if company_whatsapp_number %}<a class="whatsapp-link" href="https://wa.me/{{ company_whatsapp_number }}?text={{ project.name|urlencode }}%20enquiry" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> Prefer WhatsApp?</a>{% endif %}
+  </aside></div>
+</div></div></section>
+{% endblock %}
